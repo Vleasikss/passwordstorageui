@@ -5,7 +5,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import {Link} from "@material-ui/core";
-import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import EmailValidator from "../validators/EmailValidator";
 import PasswordValidator from "../validators/PasswordValidator";
 import SubmitButton from "../validators/SubmitButton";
@@ -27,12 +27,9 @@ interface UserFormSignUp {
 }
 
 
-const SignUpForm:React.FC = () => {
-    const classes = useStyles();
-    const context = useAlertState();
+const SignUpForm: React.FC = () => {
     const history = useHistory();
     const dispatch = useAlertDispatch();
-
 
     const [form, setForm] = useState<UserFormSignUp>({
         email: '',
@@ -41,16 +38,17 @@ const SignUpForm:React.FC = () => {
         lastName: '',
         remember: false
     });
+
     const [repeatedPassword, setRepeatedPassword] = useState("");
     const inputEl = useRef(null);
 
-    const isFormValid = ():boolean => {
+    const isFormValid = (): boolean => {
 
         // @ts-ignore
         const childs = inputEl.current.childs || [];
-        for(let i = 0; i < childs.length; i++){
+        for (let i = 0; i < childs.length; i++) {
             // @ts-ignore
-            if (!childs[i].state.isValid){
+            if (!childs[i].state.isValid) {
                 return false;
             }
         }
@@ -62,12 +60,9 @@ const SignUpForm:React.FC = () => {
     /**
      * The main event on submitting form
      */
-    const handleSubmitButtonClick = ():boolean => {
-        if (isFormValid()){
-
-            // todo HERE IS ALL THE LOGIC TO SIGN UP
-
-            userService.createNewUser({username: form.firstName, password: form.password}, (result) => {
+    const handleSubmitButtonClick = (): any => {
+        return userService.createNewUser({username: form.firstName, password: form.password})
+            .then(result => {
                 console.log(result)
                 if (result) {
                     dispatch(showSuccessAlert("successfully registered new user"))
@@ -76,34 +71,33 @@ const SignUpForm:React.FC = () => {
                     dispatch(showFailureAlert("unable to create new user"))
                 }
             })
-            return true;
-        }else {
-            return false;
-        }
+            .catch(console.log)
     }
-    const handleCheckBoxClick = ():void => {
+    const handleCheckBoxClick = (): void => {
         setForm({...form, remember: !form.remember});
     }
-    const handleMailInputChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+    const handleMailInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setForm({...form, email: event.target.value});
 
     }
-    const handlePasswordInputChange = (event:React.ChangeEvent<HTMLInputElement>) => {
-        setForm( {...form, password: event.target.value});
+    const handlePasswordInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setForm({...form, password: event.target.value});
     }
-    const handleFirstNameInputChange = (event:React.ChangeEvent<HTMLInputElement>) => {
-        setForm( {...form, firstName: event.target.value});
+    const handleFirstNameInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setForm({...form, firstName: event.target.value});
     }
-    const handleLastNameInputChange = (event:React.ChangeEvent<HTMLInputElement>) => {
-        setForm( {...form, lastName: event.target.value});
+    const handleLastNameInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setForm({...form, lastName: event.target.value});
     }
-    const handleRepeatedPasswordInputChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+    const handleRepeatedPasswordInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRepeatedPassword(event.target.value);
     }
 
-    return(
+    return (
         <ValidatorForm ref={inputEl}
-                           onSubmit={()=>{history.push('/login')}}>
+                       onSubmit={() => {
+                           history.push('/login')
+                       }}>
             <TextValidator
                 variant="outlined"
                 margin="normal"

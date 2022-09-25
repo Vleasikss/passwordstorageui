@@ -5,17 +5,15 @@ import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
 import Box from "@material-ui/core/Box";
 import {Copyright} from "../LoginPage";
-import EmailValidator from "../validators/EmailValidator";
 import PasswordValidator from "../validators/PasswordValidator";
 import {TextValidator, ValidatorForm} from "react-material-ui-form-validator";
 import SubmitButton from "../validators/SubmitButton";
 import {useAlertDispatch} from "../provider/reducers/alert/AlertProvider";
 import {showFailureAlert, showSuccessAlert} from "../provider/reducers/alert/AlertActions";
 import {useHistory} from "react-router-dom";
-import Pages from "../../../routing/Pages";
-import IUserForm from "../../../model/IUserForm";
 import userService from "../../../service/userService";
 import consts from "../../../service/consts";
+import Pages from "../../../routing/Pages";
 
 
 interface UserFormLogin {
@@ -50,26 +48,24 @@ const LoginForm: React.FC = () => {
     /**
      * The main event on submitting form
      */
-    const handleSubmitButtonClick = (): boolean => {
-        if (isFormValid()) {
-            // todo HERE IS ALL THE LOGIC TO SIGN IN
-            userService.loginUser(form, (maybeUser: any) => {
-                console.log(maybeUser)
-                console.log(maybeUser)
-
-                if (maybeUser) {
+    const handleSubmitButtonClick = (): any => {
+        if (!isFormValid()) {
+           return dispatch(showFailureAlert("Login or password is incorrect"))
+        }
+        userService.loginUser({username: form.username, password: form.password})
+            .then(response => response.json())
+            .then(maybeUser => {
+                if (maybeUser.token !== undefined) {
                     dispatch(showSuccessAlert("Signed in successfully"));
-                    history.push(Pages.MAIN);
                     consts.setAuthentication(maybeUser.token, maybeUser.username)
+                    history.push(Pages.MAIN)
                 } else {
                     dispatch(showFailureAlert("Login or password is incorrect"))
                 }
             })
-            return true;
-        } else {
-            return false;
-        }
+            .catch(console.log)
     }
+
     const handleUsernameInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setForm({...form, username: event.target.value});
     }
@@ -108,7 +104,7 @@ const LoginForm: React.FC = () => {
                                    onChange={() => handleCheckBoxClick()}/>}
                 label="Remember me"
             />
-            <SubmitButton handleButtonClick={handleSubmitButtonClick}/>
+            <SubmitButton handleButtonClick={handleSubmitButtonClick} text={"Log in"}/>
 
             <Grid container>
                 <Grid item xs>

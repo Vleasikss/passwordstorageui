@@ -4,8 +4,8 @@ import Alert from '@material-ui/lab/Alert';
 import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
 import CloseIcon from '@material-ui/icons/Close';
-import {useAlertDispatch, useAlertState} from "../provider/reducers/alert/AlertProvider";
-import {hideAlert} from "../provider/reducers/alert/AlertActions";
+import {useAlertDispatch, useAlertState} from "../../pages/login/provider/reducers/alert/AlertProvider";
+import {hideAlert} from "../../pages/login/provider/reducers/alert/AlertActions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -25,7 +25,6 @@ const AlertComponent:React.FC<SuccessAlertProps> = () => {
     const classes = useStyles();
     const dispatch = useAlertDispatch();
     const context = useAlertState();
-
 
     return (
         <div className={classes.root}>

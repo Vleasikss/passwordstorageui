@@ -8,15 +8,28 @@ import {
 import {AlertProvider} from "./pages/login/provider/reducers/alert/AlertProvider";
 import Pages from "./routing/Pages";
 import Loading from "./components/loading/Loading";
+import consts from "./service/consts";
+import ServiceCredentialsPage from "./pages/service-credentials/ServiceCredentialsPage";
+import PutCredentialsPage from "./pages/put-credentials/PutCredentialsPage";
 const LoginPage = React.lazy(() => import("./pages/login/LoginPage"));
 const MainPage = React.lazy(() => import("./pages/main/MainPage"));
 
 
 
 const App:React.FC = () => {
-    // todo logic
-    const isUserAuthenticated = true;
-    //process.env.REACT_APP_NAME}
+
+    const isUserAuthenticated = () => consts.isUserAuthenticated();
+
+    if (!isUserAuthenticated()) {
+        return <AlertProvider>
+            <Router>
+                <Suspense fallback={<Loading/>}>
+                    <Route path={Pages.ANY} exact component={() => <LoginPage/>}/>
+                </Suspense>
+            </Router>
+        </AlertProvider>
+    }
+
     return(
         <AlertProvider>
             <Router>
@@ -24,11 +37,10 @@ const App:React.FC = () => {
                     <Switch>
                         <Route path={Pages.LOGIN} exact component={() => <LoginPage /> }/>
                         <Route path={Pages.SIGN_UP} exact component={() => <LoginPage signUpPage={true}/>}/>
-                        {
-                            isUserAuthenticated
-                            ? <Route path={Pages.MAIN} exact component={() => <MainPage/>}/>
-                            : <Route path={Pages.ANY} exact component={() => <LoginPage/>}/>
-                        }
+                        <Route path={Pages.MAIN} exact component={() => <MainPage/>}/>
+                        <Route path={Pages.SERVICE_CREDENTIALS} exact component={() => <ServiceCredentialsPage/>}/>
+                        <Route path={Pages.PUT_CREDENTIALS} exact component={() => <PutCredentialsPage/>}/>
+                        <Route path={Pages.ANY} exact component={() => <MainPage/>}/>
                     </Switch>
                 </Suspense>
             </Router>

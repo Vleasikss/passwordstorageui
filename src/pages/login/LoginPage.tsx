@@ -4,13 +4,12 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import {Fade} from "@material-ui/core";
 import LoginForm from "./forms/LoginForm";
 import SignUpForm from "./forms/SignUpForm";
-import AlertComponent from "./alerts/AlertComponent";
+import AlertComponent from "../../components/alerts/AlertComponent";
 import {AlertProvider} from "./provider/reducers/alert/AlertProvider";
 
 
@@ -78,13 +77,10 @@ const SignInSide:React.FC<Props> = ({signUpPage=false}) => {
                 </Grid>
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
 
-                    {/*todo put it somewhere else*/}
                     <AlertComponent/>
-                    {/*todo put it somewhere else*/}
 
                     <div className={classes.paper}>
                         <Avatar className={classes.avatar}>
-                            <LockOutlinedIcon/>
                         </Avatar>
                         <Typography component="h1" variant="h5">
                             {signUpPage ? "Sign up" : "Sign in"}

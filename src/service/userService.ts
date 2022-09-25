@@ -1,147 +1,62 @@
 import consts from "./consts";
 import UserForm from "../model/IUserForm";
-import ITokenInfo from "../model/ITokenInfo";
 import ICredentials from "../model/ICredentials";
-import IUserForm from "../model/IUserForm";
+import ICredentialsDto from "../model/ICredentialsDto";
 
-const Methods = {
-    GET: "get",
-    POST: "post",
-    DELETE: "delete",
-    PUT: "put"
-}
+
 const AuthorizationHeader = "Authorization";
 
-const Statuses = {
-    OK: 200
+const getAuthorizedHeaders = (): {} => {
+    return {
+        "Authorization": consts.tokenId(),
+        "Content-Type": "application/json; charset=utf-8"
+    }
 }
-
-const createAuthorizedRequest = (url: string, method: string): XMLHttpRequest => {
-    const xmlHttpRequest = new XMLHttpRequest();
-    xmlHttpRequest.open(method, url);
-    xmlHttpRequest.setRequestHeader(AuthorizationHeader, consts.tokenId());
-    xmlHttpRequest.setRequestHeader("Content-type", "application/json; charset=utf-8");
-    return xmlHttpRequest;
-}
-const createUnAuthorizedRequest = (url: string, method: string): XMLHttpRequest => {
-    const xmlHttpRequest = new XMLHttpRequest();
-    xmlHttpRequest.open(method, url);
-    xmlHttpRequest.setRequestHeader("Content-type", "application/json; charset=utf-8");
-    return xmlHttpRequest;
+const getHeaders = (): {} => {
+    return {
+        "Content-Type": "application/json; charset=utf-8"
+    }
 }
 
 export default {
-    findAllCredentialsAtAuthenticatedUser: (username: string, callback: (credentials: any) => void): void => {
-        const {url} = consts.findAllCredentialsAtAuthenticatedUser(username);
-        const xmlHttpRequest = createAuthorizedRequest(url, Methods.GET);
-        xmlHttpRequest.responseType = "json";
-        try {
-            xmlHttpRequest.send();
-            xmlHttpRequest.onload = function () {
-                if (xmlHttpRequest.status === Statuses.OK) {
-                    callback(xmlHttpRequest.response || []);
-                    return;
-                }
-                console.error(`unable to get all users, status=${xmlHttpRequest.status}`);
-            };
-        } catch (err) {
-            console.error(`unable to get all users, error=${err}`);
-        }
-    },
-    findAllCredentialsByService: (serviceName: string, callback: (credentials: any) => void): void => {
-        const {url} = consts.findAllCredentialsByService(serviceName);
-        const xmlHttpRequest = createAuthorizedRequest(url, Methods.GET);
-        xmlHttpRequest.responseType = "json";
-        try {
-            xmlHttpRequest.send();
-            xmlHttpRequest.onload = function () {
-                if (xmlHttpRequest.status === Statuses.OK) {
-                    callback(xmlHttpRequest.response || null);
-                    return;
-                }
-                console.error(`unable to get user by id, status=${xmlHttpRequest.status}`);
-            }
-        } catch (err) {
-            console.error(`unable to get user by id, error=${err}`);
-        }
-    },
-    putCredentials: (credentials: ICredentials, callback: (user: IUserForm | undefined) => void) => {
-        const {url} = consts.putCredentials();
-        const xmlHttpRequest = createAuthorizedRequest(url, Methods.POST);
-        xmlHttpRequest.responseType = "json";
-        try {
-            xmlHttpRequest.send(JSON.stringify(credentials));
-            xmlHttpRequest.onload = function () {
-                callback(xmlHttpRequest.response || null);
-            }
-            console.error(`unable to get user by login, status=${xmlHttpRequest.status}`);
-        } catch (err) {
-            console.error(`unable to get user by login, error=${err}`);
-        }
-    },
-    createNewUser: (user: UserForm, callback: (response: any) => void): any | undefined => {
-        const {url} = consts.createNewUserUrl();
-        const xmlHttpRequest = createUnAuthorizedRequest(url, Methods.POST);
-        xmlHttpRequest.responseType = "json";
 
-        try {
-            xmlHttpRequest.send(JSON.stringify(user));
-            xmlHttpRequest.onload = function () {
-                if (xmlHttpRequest.status === Statuses.OK) {
-                    console.log(`successfully create new user, status=${xmlHttpRequest.status}`);
-                    callback(xmlHttpRequest.response || null);
-                    return;
-                }
-                console.error(`unable to create new user, status=${xmlHttpRequest.status}`);
-            }
-            return;
-        } catch (err) {
-            console.error(`unable to create new user, error=${err}`);
-        }
+    findAllServices: (): Promise<any> => {
+        const {url, method} = consts.findAllServices()
+        const headers = getAuthorizedHeaders()
+        return fetch(url, {headers, method})
     },
 
-    loginUser: (user: UserForm, callback: (token: ITokenInfo) => void): any | undefined => {
-        const {url} = consts.loginUserUrl();
-        const xmlHttpRequest = createUnAuthorizedRequest(url, Methods.POST);
-        xmlHttpRequest.responseType = "json";
-
-        try {
-            xmlHttpRequest.send(JSON.stringify(user));
-            xmlHttpRequest.onload = function () {
-                if (xmlHttpRequest.status === Statuses.OK) {
-                    console.log(`successfully log in new user, status=${xmlHttpRequest.status}`);
-                    callback(xmlHttpRequest.response || null);
-                    return;
-                }
-                console.error(`unable to log in new user, status=${xmlHttpRequest.status}`);
-            }
-            return;
-        } catch (err) {
-            console.error(`unable to log in new user, error=${err}`);
-        }
+    findPasswordOfCredentials: (credentials: {serviceName: string, login: string}): Promise<any> => {
+        console.log(credentials)
+        const {url, method} = consts.findPasswordOfCredentials(credentials.serviceName, credentials.login)
+        const headers = getAuthorizedHeaders();
+        return fetch(url, {headers, method})
     },
 
-    findUserByUsername: (username: string, callback: (user: any | undefined) => void): any => {
-        const {url} = consts.findUserByUsername(username);
-        const xmlHttpRequest = createUnAuthorizedRequest(url, Methods.GET);
-        xmlHttpRequest.responseType = "json";
-
-        try {
-            xmlHttpRequest.send();
-            xmlHttpRequest.onload = function () {
-                if (xmlHttpRequest.status === Statuses.OK) {
-                    console.log(`successfully log in new user, status=${xmlHttpRequest.status}`);
-                    callback(xmlHttpRequest.response || null);
-                    return;
-                }
-                console.error(`unable to log in new user, status=${xmlHttpRequest.status}`);
-            }
-            return;
-        } catch (err) {
-            console.error(`unable to log in new user, error=${err}`);
-        }
+    findAllCredentialsByService: (serviceName: string): Promise<any> => {
+        const {url, method} = consts.findAllCredentialsByService(serviceName)
+        const headers = getAuthorizedHeaders()
+        return fetch(url, {headers, method})
     },
 
+    putCredentials: (credentials: ICredentials) => {
+        const {url, method} = consts.putCredentials();
+        const headers = getAuthorizedHeaders();
+        console.log(consts.tokenId())
+        return fetch(url, {headers, method, body: JSON.stringify(credentials)})
+    },
+
+    createNewUser: (user: UserForm): Promise<any> => {
+        const {url, method} = consts.createNewUserUrl();
+        const headers = getHeaders();
+        return fetch(url, {headers, method, body: JSON.stringify(user)})
+    },
+
+    loginUser: (user: UserForm): Promise<any> => {
+        const {url, method} = consts.loginUserUrl()
+        const headers = getHeaders();
+        return fetch(url, {headers, method, body: JSON.stringify(user)})
+    }
 
 
 }

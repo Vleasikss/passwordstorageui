@@ -1,22 +1,32 @@
 import React, {useEffect, useState} from "react";
 import Loading from "../../components/loading/Loading";
+import userService from "../../service/userService";
+import CardComponent from "./CardComponent";
 
 const MainPage:React.FC = () => {
 
     const [fetchInProgress, setFetchProgress] = useState(true);
+    const [services, setServices] = useState<string[]>([])
+
 
     useEffect(() => {
-        //fake request
-        fetch('https://jsonplaceholder.typicode.com/todos/')
-            .then(response => response.json())
-            .then(json => console.log(json))
-            .then(() => setFetchProgress(false));
+        userService.findAllServices()
+            .then(result => result.json())
+            .then(result => setServices(result))
+            .then(() => setFetchProgress(false))
+            .catch(console.error)
     }, [])
-    return(
+
+    if (fetchInProgress) {
+        return <Loading/>
+    }
+
+    return (
         <div>
-            {fetchInProgress ? <Loading/> : <h1>Hello</h1>}
+            {services.map(s => <CardComponent key={s} value={s}/>)}
         </div>
     )
+
 }
 
 export default MainPage;

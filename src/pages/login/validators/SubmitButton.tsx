@@ -7,12 +7,12 @@ type SubmitButtonProps = {
     handleButtonClick: (e:React.MouseEvent<HTMLButtonElement>) => void
 
 }
-const SubmitButton:React.FC<SubmitButtonProps> = ({text="Sign in", handleButtonClick}) => {
+const SubmitButton:React.FC<SubmitButtonProps> = ({text = "", handleButtonClick}) => {
     const classes = useStyles();
 
     return(
         <Button
-        type="submit"
+        type="button"
         fullWidth
         variant="contained"
         color="primary"
