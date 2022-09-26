@@ -1,10 +1,7 @@
 import consts from "./consts";
 import UserForm from "../model/IUserForm";
 import ICredentials from "../model/ICredentials";
-import ICredentialsDto from "../model/ICredentialsDto";
 
-
-const AuthorizationHeader = "Authorization";
 
 const getAuthorizedHeaders = (): {} => {
     return {
@@ -12,6 +9,7 @@ const getAuthorizedHeaders = (): {} => {
         "Content-Type": "application/json; charset=utf-8"
     }
 }
+
 const getHeaders = (): {} => {
     return {
         "Content-Type": "application/json; charset=utf-8"

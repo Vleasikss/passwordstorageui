@@ -11,6 +11,7 @@ import Loading from "./components/loading/Loading";
 import consts from "./service/consts";
 import ServiceCredentialsPage from "./pages/service-credentials/ServiceCredentialsPage";
 import PutCredentialsPage from "./pages/put-credentials/PutCredentialsPage";
+import NavigationBar from "./components/bar/NavigationBar";
 const LoginPage = React.lazy(() => import("./pages/login/LoginPage"));
 const MainPage = React.lazy(() => import("./pages/main/MainPage"));
 
@@ -33,6 +34,7 @@ const App:React.FC = () => {
     return(
         <AlertProvider>
             <Router>
+                <NavigationBar/>
                 <Suspense fallback={<Loading/>}>
                     <Switch>
                         <Route path={Pages.LOGIN} exact component={() => <LoginPage /> }/>

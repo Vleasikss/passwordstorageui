@@ -23,6 +23,11 @@ const LOGIN_STORAGE_NAME = "USER_LOGIN";
 const userLogin = () => {
     return localStorage.getItem(LOGIN_STORAGE_NAME) || "";
 }
+const logout = () => {
+    localStorage.removeItem(LOGIN_STORAGE_NAME)
+    localStorage.removeItem(TOKEN_ID_STORAGE_NAME)
+    localStorage.removeItem(USER_ROLE_STORAGE_NAME)
+}
 const tokenId = () => {
     return "Bearer " + localStorage.getItem(TOKEN_ID_STORAGE_NAME) || "";
 }
@@ -34,7 +39,7 @@ const isRoleAdmin = () => {
     return USER_ROLES.ADMIN === localStorage.getItem(USER_ROLE_STORAGE_NAME);
 }
 const isUserAuthenticated = (): boolean => {
-    return !!tokenId();
+    return !!userLogin();
 }
 const userRole = (): string => {
     return localStorage.getItem(USER_ROLE_STORAGE_NAME)!;
@@ -44,6 +49,7 @@ export default {
     tokenId,
     userLogin,
     userRole,
+    logout,
     isRoleAdmin,
     setAuthentication,
     isUserAuthenticated,
@@ -75,12 +81,6 @@ export default {
         return {
             url: `${BACKEND_URL}user/storage`,
             method: Methods.POST
-        }
-    },
-    findUserByUsername: (username: string): RequestSettings => {
-        return {
-            url: `${BACKEND_URL}user/${username}`,
-            method: Methods.GET
         }
     },
     findPasswordOfCredentials(serviceName: string, login: string) {

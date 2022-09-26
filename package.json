@@ -7,11 +7,14 @@
     "@emotion/styled": "^11.10.4",
     "@material-ui/icons": "^4.11.3",
     "@material-ui/lab": "^4.0.0-alpha.61",
+    "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.6",
     "@types/jest": "^26.0.15",
     "@types/node": "17.0.45",
     "@types/react": "17.0.50",
     "@types/react-dom": "17.0.17",
+    "base-64": "^1.0.0",
+    "utf8": "^1.0.0",
     "buffer": "^6.0.3",
     "dotenv": "^8.2.0",
     "react": "^17.0.0",
@@ -45,8 +48,10 @@
     ]
   },
   "devDependencies": {
+    "@types/base-64": "^1.0.0",
     "@types/react-material-ui-form-validator": "^2.1.0",
     "@types/react-router-dom": "5.3.3",
+    "@types/utf8": "^3.0.1",
     "react-router-dom": "5.3.3"
   }
 }
