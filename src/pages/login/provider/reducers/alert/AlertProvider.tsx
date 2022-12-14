@@ -2,7 +2,7 @@ import React, {useEffect, useReducer} from "react";
 import {alertReducer} from "./AlertReducers";
 import {DEFAULT_SUCCESS_ALERT} from "./AlertContext";
 import {Alert} from "./Alert";
-import {AlertAction} from "./AlertActions";
+import {AlertAction, hideAlert} from "./AlertActions";
 
 export const alertState = React.createContext<Alert>(DEFAULT_SUCCESS_ALERT);
 export const alertDispatch = React.createContext<React.Dispatch<AlertAction> | undefined>(undefined);
@@ -14,18 +14,18 @@ export const AlertProvider = ({children}: { children: React.ReactNode; }) => {
 
 
     useEffect(() => {
-        // const closeAutomatically = () => {
-        //     setTimeout(() => dispatch(hideAlert()), 3000)
-        // }
-        // closeAutomatically();
+        const closeAutomatically = () => {
+            setTimeout(() => dispatch(hideAlert()), 5000)
+        }
+        closeAutomatically();
     },[state]);
+
     return (
         <alertState.Provider value={state}>
         <alertDispatch.Provider value={dispatch}>
             {children}
         </alertDispatch.Provider>
         </alertState.Provider>
-
     );
 };
 

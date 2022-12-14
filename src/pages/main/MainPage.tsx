@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import {useHistory} from "react-router-dom";
 import Pages from "../../routing/Pages";
 
-const MainPage:React.FC = () => {
+const MainPage: React.FC = () => {
     const history = useHistory();
 
     const [fetchInProgress, setFetchProgress] = useState(true);
@@ -24,7 +24,7 @@ const MainPage:React.FC = () => {
     }
 
     if (fetchInProgress) {
-        return <Loading/>
+        return (<Loading centered={true}/>)
     }
 
     return (

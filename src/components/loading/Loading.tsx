@@ -10,12 +10,12 @@ const Loading: React.FC<LoadingProps> = ({centered = true}) => {
 
     if (centered) {
         return <div className={"loading-centered"}>
-            <CircularProgress style={{}}/>
+            <CircularProgress/>
         </div>
     }
 
     return (
-        <CircularProgress style={{}}/>
+        <CircularProgress/>
     );
 }
 export default Loading

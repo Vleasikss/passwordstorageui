@@ -83,10 +83,22 @@ export default {
             method: Methods.POST
         }
     },
+    dropUser: (serviceName: string, login: string): RequestSettings => {
+        return {
+            url: `${BACKEND_URL}user/storage/${login}?serviceName=${serviceName}`,
+            method: Methods.DELETE
+        }
+    },
     findPasswordOfCredentials(serviceName: string, login: string) {
         return {
             url: `${BACKEND_URL}user/storage/${serviceName}/${login}`,
             method: Methods.GET
+        }
+    },
+    dropService(serviceName: string) {
+        return {
+            url: `${BACKEND_URL}user/storage?serviceName=${serviceName}`,
+            method: Methods.DELETE
         }
     }
 }

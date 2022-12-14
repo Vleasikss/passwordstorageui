@@ -18,6 +18,10 @@ const pages: ToolbarPage[] = [
         title: "New creds",
         onClick: (history) => history.push(Pages.PUT_CREDENTIALS)
     },
+    {
+        title: "Main",
+        onClick: (history) => history.push(Pages.MAIN)
+    }
 ]
 const NavigationBar: React.FC = () => {
     const [username, setUsername] = useState(consts.userLogin())
@@ -63,7 +67,7 @@ const NavigationBar: React.FC = () => {
     }
 
     return (
-        <Box sx={{ flexGrow: 1}} style={{marginBottom: 10}}>
+        <Box style={{marginBottom: 10}}>
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>Password Storage</Typography>

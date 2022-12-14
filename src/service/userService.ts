@@ -24,7 +24,7 @@ export default {
         return fetch(url, {headers, method})
     },
 
-    findPasswordOfCredentials: (credentials: {serviceName: string, login: string}): Promise<any> => {
+    findPasswordOfCredentials: (credentials: { serviceName: string, login: string }): Promise<any> => {
         console.log(credentials)
         const {url, method} = consts.findPasswordOfCredentials(credentials.serviceName, credentials.login)
         const headers = getAuthorizedHeaders();
@@ -44,12 +44,21 @@ export default {
         return fetch(url, {headers, method, body: JSON.stringify(credentials)})
     },
 
+    dropCredentials: (credentials: { serviceName: string, login: string }) => {
+        const {url, method} = consts.dropUser(credentials.serviceName, credentials.login)
+        const headers = getAuthorizedHeaders();
+        return fetch(url, {headers, method})
+    },
+    dropService: (credentials: { serviceName: string }) => {
+        const {url, method} = consts.dropService(credentials.serviceName)
+        const headers = getAuthorizedHeaders();
+        return fetch(url, {headers, method})
+    },
     createNewUser: (user: UserForm): Promise<any> => {
         const {url, method} = consts.createNewUserUrl();
         const headers = getHeaders();
         return fetch(url, {headers, method, body: JSON.stringify(user)})
     },
-
     loginUser: (user: UserForm): Promise<any> => {
         const {url, method} = consts.loginUserUrl()
         const headers = getHeaders();
