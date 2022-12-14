@@ -61,12 +61,12 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 type Props = {
-    signUpPage?: boolean
+    signUpPage: boolean
 }
 
-const SignInSide:React.FC<Props> = ({signUpPage=false}) => {
+const SignInSide:React.FC<Props> = ({signUpPage}) => {
     const classes = useStyles();
-    // const context = useLoginContext()
+
 
     return (
         <AlertProvider>

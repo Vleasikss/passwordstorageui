@@ -25,7 +25,9 @@ const App:React.FC = () => {
         return <AlertProvider>
             <Router>
                 <Suspense fallback={<Loading/>}>
-                    <Route path={Pages.ANY} exact component={() => <LoginPage/>}/>
+                    <Route path={Pages.SIGN_UP} exact component={() => <LoginPage signUpPage={true}/>}/>
+                    <Route path={Pages.LOGIN} exact component={() => <LoginPage signUpPage={false}/>}/>
+                    <Route path={Pages.ANY} exact component={() => <LoginPage signUpPage={false}/>}/>
                 </Suspense>
             </Router>
         </AlertProvider>
@@ -37,8 +39,8 @@ const App:React.FC = () => {
                 <NavigationBar/>
                 <Suspense fallback={<Loading/>}>
                     <Switch>
-                        <Route path={Pages.LOGIN} exact component={() => <LoginPage /> }/>
                         <Route path={Pages.SIGN_UP} exact component={() => <LoginPage signUpPage={true}/>}/>
+                        <Route path={Pages.LOGIN} exact component={() => <LoginPage signUpPage={false} /> }/>
                         <Route path={Pages.MAIN} exact component={() => <MainPage/>}/>
                         <Route path={Pages.SERVICE_CREDENTIALS} exact component={() => <ServiceCredentialsPage/>}/>
                         <Route path={Pages.PUT_CREDENTIALS} exact component={() => <PutCredentialsPage/>}/>
