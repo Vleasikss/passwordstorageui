@@ -50,7 +50,7 @@ const NavigationBar: React.FC = () => {
                         ))}
                     </Box>
                     <p style={{marginRight: 10}}>{username}</p>
-                    <Button color={"inherit"}>Login</Button>
+                    <Button color="inherit" onClick={handleLogoutButton}>Logout</Button>
                 </>
             )
         }
@@ -58,16 +58,13 @@ const NavigationBar: React.FC = () => {
     const showNotAuthenticated = () => {
         return (
             <>
-                <p style={{marginRight: 10}}>{username}</p>
-                <p/>
-                <Button color="inherit" onClick={handleLogoutButton}>Logout</Button>
                 <Button color={"inherit"}>Login</Button>
             </>
         )
     }
 
     return (
-        <Box style={{marginBottom: 10}}>
+        <Box>
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>Password Storage</Typography>

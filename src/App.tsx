@@ -21,6 +21,7 @@ const App: React.FC = () => {
         return <AlertProvider>
             <Router>
                 <Suspense fallback={<Loading/>}>
+                    <NavigationBar/>
                     <Route path={Pages.SIGN_UP} exact component={() => <LoginPage signUpPage={true}/>}/>
                     <Route path={Pages.LOGIN} exact component={() => <LoginPage signUpPage={false}/>}/>
                     <Route path={Pages.ANY} exact component={() => <LoginPage signUpPage={false}/>}/>
@@ -32,8 +33,8 @@ const App: React.FC = () => {
     return (
         <AlertProvider>
             <Router>
-            <NavigationBar/>
                 <Suspense fallback={<Loading/>}>
+                    <NavigationBar/>
                     <Button/>
                     <Switch>
                         <Route path={Pages.SIGN_UP} exact component={() => <LoginPage signUpPage={true}/>}/>

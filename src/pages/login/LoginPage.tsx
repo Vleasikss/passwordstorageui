@@ -5,12 +5,10 @@ import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import {Fade} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
 import LoginForm from "./forms/LoginForm";
 import SignUpForm from "./forms/SignUpForm";
 import AlertComponent from "../../components/alerts/AlertComponent";
-import {AlertProvider} from "./provider/reducers/alert/AlertProvider";
 
 
 export function Copyright() {
@@ -64,33 +62,29 @@ type Props = {
     signUpPage: boolean
 }
 
-const SignInSide:React.FC<Props> = ({signUpPage}) => {
+const SignInSide: React.FC<Props> = ({signUpPage}) => {
     const classes = useStyles();
 
 
     return (
-        <AlertProvider>
-            <Fade in={true}>
-            <Grid container component="main" className={classes.root}>
-                <CssBaseline />
-                <Grid item xs={false} sm={4} md={7} className={classes.image}>
-                </Grid>
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-
-                    <AlertComponent/>
-
-                    <div className={classes.paper}>
-                        <Avatar className={classes.avatar}>
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            {signUpPage ? "Sign up" : "Sign in"}
-                        </Typography>
-                            {signUpPage ? <SignUpForm/> : <LoginForm/>}
-                    </div>
-                </Grid>
+        <Grid container component="main" className={classes.root}>
+            <CssBaseline/>
+            <Grid item xs={false} sm={4} md={7} className={classes.image}>
             </Grid>
-        </Fade>
-        </AlertProvider>
+            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+
+                <AlertComponent/>
+
+                <div className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        {signUpPage ? "Sign up" : "Sign in"}
+                    </Typography>
+                    {signUpPage ? <SignUpForm/> : <LoginForm/>}
+                </div>
+            </Grid>
+        </Grid>
     );
 }
 
