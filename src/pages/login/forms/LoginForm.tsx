@@ -58,7 +58,7 @@ const LoginForm: React.FC = () => {
                 if (maybeUser.token !== undefined) {
                     dispatch(showSuccessAlert("Signed in successfully"));
                     consts.setAuthentication(maybeUser.token, maybeUser.username)
-                    history.push(Pages.MAIN)
+                    return history.push(Pages.MAIN)
                 } else {
                     dispatch(showFailureAlert("Login or password is incorrect"))
                 }

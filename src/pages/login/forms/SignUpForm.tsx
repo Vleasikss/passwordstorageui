@@ -66,7 +66,7 @@ const SignUpForm: React.FC = () => {
                 console.log(result)
                 if (result) {
                     dispatch(showSuccessAlert("successfully registered new user"))
-                    history.push(Pages.LOGIN);
+                    return history.push(Pages.LOGIN);
                 } else {
                     dispatch(showFailureAlert("unable to create new user"))
                 }

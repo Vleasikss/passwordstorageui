@@ -21,28 +21,28 @@ const TOKEN_ID_STORAGE_NAME = "TOKEN_ID";
 const LOGIN_STORAGE_NAME = "USER_LOGIN";
 
 const userLogin = () => {
-    return localStorage.getItem(LOGIN_STORAGE_NAME) || "";
+    return sessionStorage.getItem(LOGIN_STORAGE_NAME) || "";
 }
 const logout = () => {
-    localStorage.removeItem(LOGIN_STORAGE_NAME)
-    localStorage.removeItem(TOKEN_ID_STORAGE_NAME)
-    localStorage.removeItem(USER_ROLE_STORAGE_NAME)
+    sessionStorage.removeItem(LOGIN_STORAGE_NAME)
+    sessionStorage.removeItem(TOKEN_ID_STORAGE_NAME)
+    sessionStorage.removeItem(USER_ROLE_STORAGE_NAME)
 }
 const tokenId = () => {
-    return "Bearer " + localStorage.getItem(TOKEN_ID_STORAGE_NAME) || "";
+    return "Bearer " + sessionStorage.getItem(TOKEN_ID_STORAGE_NAME) || "";
 }
 const setAuthentication = (token: string, username: string) => {
-    localStorage.setItem(TOKEN_ID_STORAGE_NAME, token);
-    localStorage.setItem(LOGIN_STORAGE_NAME, username)
+    sessionStorage.setItem(TOKEN_ID_STORAGE_NAME, token);
+    sessionStorage.setItem(LOGIN_STORAGE_NAME, username)
 }
 const isRoleAdmin = () => {
-    return USER_ROLES.ADMIN === localStorage.getItem(USER_ROLE_STORAGE_NAME);
+    return USER_ROLES.ADMIN === sessionStorage.getItem(USER_ROLE_STORAGE_NAME);
 }
 const isUserAuthenticated = (): boolean => {
     return !!userLogin();
 }
 const userRole = (): string => {
-    return localStorage.getItem(USER_ROLE_STORAGE_NAME)!;
+    return sessionStorage.getItem(USER_ROLE_STORAGE_NAME)!;
 }
 
 export default {
@@ -89,16 +89,28 @@ export default {
             method: Methods.DELETE
         }
     },
-    findPasswordOfCredentials(serviceName: string, login: string) {
+    findPasswordOfCredentials(serviceName: string, login: string): RequestSettings {
         return {
             url: `${BACKEND_URL}user/storage/${serviceName}/${login}`,
             method: Methods.GET
         }
     },
-    dropService(serviceName: string) {
+    dropService(serviceName: string): RequestSettings {
         return {
             url: `${BACKEND_URL}user/storage?serviceName=${serviceName}`,
             method: Methods.DELETE
+        }
+    },
+    exportUserCredentials(): RequestSettings {
+        return {
+            url: `${BACKEND_URL}admin/export/txt/pretty`,
+            method: Methods.GET
+        }
+    },
+    exportExcelUserCredentials(): RequestSettings {
+        return {
+            url: `${BACKEND_URL}admin/export/excel`,
+            method: Methods.GET
         }
     }
 }

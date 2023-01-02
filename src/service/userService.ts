@@ -63,7 +63,16 @@ export default {
         const {url, method} = consts.loginUserUrl()
         const headers = getHeaders();
         return fetch(url, {headers, method, body: JSON.stringify(user)})
+    },
+
+    exportUserData() {
+        const {url, method} = consts.exportUserCredentials()
+        const headers = getAuthorizedHeaders()
+        return fetch(url, {headers, method})
+    },
+    exportUserDataExcel() {
+        const {url, method} = consts.exportExcelUserCredentials()
+        const headers = getAuthorizedHeaders()
+        return fetch(url, {headers, method})
     }
-
-
 }
