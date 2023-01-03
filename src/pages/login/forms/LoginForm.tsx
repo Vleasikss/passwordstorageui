@@ -48,22 +48,28 @@ const LoginForm: React.FC = () => {
     /**
      * The main event on submitting form
      */
-    const handleSubmitButtonClick = (): any => {
+    const handleSubmitButtonClick = async (): Promise<void> => {
         if (!isFormValid()) {
-           return dispatch(showFailureAlert("Login or password is incorrect"))
+            return dispatch(showFailureAlert("Login or password is incorrect"))
         }
-        userService.loginUser({username: form.username, password: form.password})
+        const result = await userService.loginUser({username: form.username, password: form.password})
             .then(response => response.json())
             .then(maybeUser => {
                 if (maybeUser.token !== undefined) {
                     dispatch(showSuccessAlert("Signed in successfully"));
                     consts.setAuthentication(maybeUser.token, maybeUser.username)
-                    return history.push(Pages.MAIN)
+                    return true
                 } else {
                     dispatch(showFailureAlert("Login or password is incorrect"))
+                    return false
                 }
             })
             .catch(console.log)
+
+        if (result) {
+            history.push(Pages.MAIN)
+            return window.location.reload()
+        }
     }
 
     const handleUsernameInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

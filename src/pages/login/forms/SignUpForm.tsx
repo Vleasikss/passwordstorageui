@@ -61,9 +61,11 @@ const SignUpForm: React.FC = () => {
      * The main event on submitting form
      */
     const handleSubmitButtonClick = (): any => {
+        if (!isFormValid()) {
+            return dispatch(showFailureAlert("Invalid form"))
+        }
         return userService.createNewUser({username: form.firstName, password: form.password})
             .then(result => {
-                console.log(result)
                 if (result) {
                     dispatch(showSuccessAlert("successfully registered new user"))
                     return history.push(Pages.LOGIN);

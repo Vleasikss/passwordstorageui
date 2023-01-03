@@ -7,12 +7,16 @@ import Pages from "../../routing/Pages";
 import utf8 from "utf8";
 import base64 from "base-64";
 import consts from "../../service/consts";
+import {useAlertDispatch} from "../login/provider/reducers/alert/AlertProvider";
+import {showSuccessAlert} from "../login/provider/reducers/alert/AlertActions";
 
 const MainPage: React.FC = () => {
     const history = useHistory();
 
     const [fetchInProgress, setFetchProgress] = useState(true);
+    const [exportInProgress, setExportProgress] = useState(false);
     const [services, setServices] = useState<string[]>([])
+    const dispatch = useAlertDispatch();
 
     useEffect(() => {
         userService.findAllServices()
@@ -21,7 +25,6 @@ const MainPage: React.FC = () => {
             .then(() => setFetchProgress(false))
             .catch(console.error)
     }, [])
-
 
 
     function downloadByteArray(reportName: string, bytes: any, type: string) {
@@ -39,7 +42,6 @@ const MainPage: React.FC = () => {
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
-        // the filename you want
         a.download = filename;
         document.body.appendChild(a);
         a.click();
@@ -48,30 +50,34 @@ const MainPage: React.FC = () => {
     }
 
     const handleExportClick = () => {
-        setFetchProgress(true)
+        setExportProgress(true)
+        const userLogin = consts.userLogin()
         userService.exportUserData()
             .then(result => result.json())
-            .then(s => {
-                return downloadByteArray(consts.userLogin() + "-text-credentials", s.bytes, "text/plain")
-            })
-            .then(() => setFetchProgress(false))
+            .then(s => downloadByteArray(userLogin + "-text-credentials", s.bytes, "text/plain"))
+            .then(() => setExportProgress(false))
+            .then(() => dispatch(showSuccessAlert("Successfully export txt credentials for user: " + userLogin)))
     };
     const handleExcelExportClick = () => {
-        setFetchProgress(true)
+        setExportProgress(true)
+        const userLogin = consts.userLogin()
         userService.exportUserDataExcel()
             .then(response => response.blob())
-            .then(s => {
-                return downloadReadableStream(s, consts.userLogin() + "-excel-credentials.xlsx")
-            })
-            .then(() => setFetchProgress(false))
+            .then(s => downloadReadableStream(s, userLogin + "-excel-credentials.xlsx"))
+            .then(() => setExportProgress(false))
+            .then(() => dispatch(showSuccessAlert("Successfully export excel credentials for user: " + userLogin)))
     }
 
     const handleButtonSubmit = (service: string) => {
         history.push(Pages.SERVICE_CREDENTIALS.replaceAll(":service", service))
     }
 
-    if (fetchInProgress) {
-        return (<Loading centered={true}/>)
+    if (fetchInProgress || exportInProgress) {
+        return (<>
+                <Loading centered={true}/>
+                {exportInProgress && <p style={{border: "1px dotted black", textAlign: "center"}}>This will take some time to export the credentials, please wait</p>}
+            </>
+        )
     }
 
     return (
@@ -80,7 +86,8 @@ const MainPage: React.FC = () => {
                 <Button color={"primary"} onClick={handleExportClick}>Export Text Credentials</Button>
                 <Button color={"primary"} onClick={handleExcelExportClick}>Export Excel Credentials</Button>
             </div>
-            {services.map(s => <Button onClick={() => handleButtonSubmit(s)} key={s}>{s}</Button>)}
+            {services.map(s => <Button style={{border: "1px dotted black", margin: 10}}
+                                       onClick={() => handleButtonSubmit(s)} key={s}>{s}</Button>)}
         </div>
     )
 

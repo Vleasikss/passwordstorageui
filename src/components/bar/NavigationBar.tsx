@@ -27,6 +27,7 @@ const NavigationBar: React.FC = () => {
     const [username, setUsername] = useState(consts.userLogin())
 
     const history = useHistory();
+    const isUserAuthenticated = () => consts.isUserAuthenticated();
 
     const handleLogoutButton = () => {
         consts.logout();
@@ -35,31 +36,27 @@ const NavigationBar: React.FC = () => {
     }
 
     const showAuthenticated = () => {
-        if (username) {
-            return (
-                <>
-                    <Box style={{margin: 10}}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page.title}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                                onClick={() => page.onClick(history)}
-                            >
-                                {page.title}
-                            </Button>
-                        ))}
-                    </Box>
-                    <p style={{marginRight: 10}}>{username}</p>
-                    <Button color="inherit" onClick={handleLogoutButton}>Logout</Button>
-                </>
-            )
-        }
+        return (
+            <>
+                <Box style={{margin: 10}}>
+                    {pages.map((page) => (
+                        <Button
+                            key={page.title}
+                            sx={{my: 2, color: 'white', display: 'block'}}
+                            onClick={() => page.onClick(history)}
+                        >
+                            {page.title}
+                        </Button>
+                    ))}
+                </Box>
+                <p style={{marginRight: 10}}>{username}</p>
+                <Button color="inherit" onClick={handleLogoutButton}>Logout</Button>
+            </>
+        )
     }
     const showNotAuthenticated = () => {
         return (
-            <>
-                <Button color={"inherit"}>Login</Button>
-            </>
+            <Button color={"inherit"}>Login</Button>
         )
     }
 
@@ -67,8 +64,8 @@ const NavigationBar: React.FC = () => {
         <Box>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h6" sx={{ flexGrow: 1 }}>Password Storage</Typography>
-                    {username ? showAuthenticated() : showNotAuthenticated()}
+                    <Typography variant="h6" sx={{flexGrow: 1}}>Password Storage</Typography>
+                    {isUserAuthenticated() ? showAuthenticated() : showNotAuthenticated()}
                 </Toolbar>
             </AppBar>
         </Box>

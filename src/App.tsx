@@ -8,6 +8,7 @@ import ServiceCredentialsPage from "./pages/service-credentials/ServiceCredentia
 import PutCredentialsPage from "./pages/put-credentials/PutCredentialsPage";
 import NavigationBar from "./components/bar/NavigationBar";
 import Button from "@material-ui/core/Button";
+import NoAccessPage from "./pages/access/NoAccessPage";
 
 const LoginPage = React.lazy(() => import("./pages/login/LoginPage"));
 const MainPage = React.lazy(() => import("./pages/main/MainPage"));
@@ -24,7 +25,7 @@ const App: React.FC = () => {
                     <NavigationBar/>
                     <Route path={Pages.SIGN_UP} exact component={() => <LoginPage signUpPage={true}/>}/>
                     <Route path={Pages.LOGIN} exact component={() => <LoginPage signUpPage={false}/>}/>
-                    <Route path={Pages.ANY} exact component={() => <LoginPage signUpPage={false}/>}/>
+                    <Route path={Pages.NO_ACCESS} exact component={() => <NoAccessPage/>}/>
                 </Suspense>
             </Router>
         </AlertProvider>
